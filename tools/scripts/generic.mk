@@ -8,6 +8,12 @@ rwildcard = $(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2
 #                          COMMON INITIALIZATION
 #------------------------------------------------------------------------------
 
+ifneq ($(if $(findstring iio, $(LIBRARIES)), 1),)
+#Workaround to keep windows.mk and linux.mk working
+#TODO create rules for libraries here (similar to aducm.mk)
+TINYIIOD = y
+endif
+
 # Get all .c and .h files from SRC_DIRS
 SRCS     += $(foreach dir, $(SRC_DIRS), $(call rwildcard, $(dir),*.c))
 INCS     += $(foreach dir, $(SRC_DIRS), $(call rwildcard, $(dir),*.h))
