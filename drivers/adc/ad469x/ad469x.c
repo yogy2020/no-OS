@@ -127,6 +127,52 @@ int32_t ad469x_spi_single_conversion(struct ad469x_dev *dev,
 }
 
 /**
+ * SPI read from device using a mask.
+ * @param dev - The device structure.
+ * @param reg_addr - The register address.
+ * @param mask - The mask.
+ * @param data - The register data.
+ * @return 0 in case of success, negative error code otherwise.
+ */
+int32_t ad469x_spi_read_mask(struct ad469x_dev *dev,
+			      uint16_t reg_addr,
+			      uint8_t mask,
+			      uint8_t *data)
+{
+	uint8_t reg_data[3];
+	int32_t ret;
+
+	ret = ad469x_spi_reg_read(dev, reg_addr, reg_data);
+	*data = (reg_data[1] & mask);
+
+	return ret;
+}
+
+/**
+ * SPI write to device using a mask.
+ * @param dev - The device structure.
+ * @param reg_addr - The register address.
+ * @param mask - The mask.
+ * @param data - The register data.
+ * @return 0 in case of success, negative error code otherwise.
+ */
+int32_t ad469x_spi_write_mask(struct ad469x_dev *dev,
+			       uint16_t reg_addr,
+			       uint8_t mask,
+			       uint8_t data)
+{
+	uint8_t reg_data;
+	int32_t ret;
+
+	ret = ad469x_spi_reg_read(dev, reg_addr, &reg_data);
+	reg_data &= ~mask;
+	reg_data |= data;
+	ret |= ad469x_spi_reg_write(dev, reg_addr, reg_data);
+
+	return ret;
+}
+
+/**
  * Initialize the device.
  * @param device - The device structure.
  * @param init_param - The structure that contains the device initial

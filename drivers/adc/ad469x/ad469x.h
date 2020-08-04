@@ -105,9 +105,19 @@ struct ad469x_init_param {
 };
 
 int32_t ad469x_spi_reg_read(struct ad469x_dev *dev,
-			    uint8_t *reg_data);
+			     uint16_t reg_addr,
+			     uint8_t *reg_data);
 int32_t ad469x_spi_reg_write(struct ad469x_dev *dev,
-			     uint8_t reg_data);
+			      uint16_t reg_addr,
+			      uint8_t reg_data);
+int32_t ad469x_spi_read_mask(struct ad469x_dev *dev,
+			      uint16_t reg_addr,
+			      uint8_t mask,
+			      uint8_t *data);
+int32_t ad469x_spi_write_mask(struct ad469x_dev *dev,
+			       uint16_t reg_addr,
+			       uint8_t mask,
+			       uint8_t data);
 int32_t ad469x_init(struct ad469x_dev **device,
 		    struct ad469x_init_param *init_param);
 int32_t ad469x_remove(struct ad469x_dev *dev);
