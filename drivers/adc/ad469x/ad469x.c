@@ -45,6 +45,7 @@
 #include "stdbool.h"
 #include "ad469x.h"
 #include "spi_engine.h"
+#include "error.h"
 
 /******************************************************************************/
 /************************** Functions Implementation **************************/
@@ -185,11 +186,28 @@ int32_t ad469x_init(struct ad469x_dev **device,
 	struct ad469x_dev *dev;
 	int32_t ret;
 	uint8_t data = 0;
+	int32_t status;
+	uint32_t rate;
 	struct spi_engine_init_param *spi_eng_init_param = init_param->spi_init.extra;
 
 	dev = (struct ad469x_dev *)malloc(sizeof(*dev));
 	if (!dev)
 		return -1;
+
+	status = axi_clkgen_init(&dev->clkgen, &init_param->clkgen_init);
+	if (status != SUCCESS) {
+		printf("error: %s: axi_clkgen_init() failed\n", init_param->clkgen_init.name);
+		goto error;
+	}
+
+	status = axi_clkgen_set_rate(dev->clkgen, 160000000);
+	if (status != SUCCESS) {
+		printf("error: %s: axi_clkgen_set_rate() failed\n", init_param->clkgen_init.name);
+		goto error;
+	}
+	status = axi_clkgen_get_rate(dev->clkgen, &rate);
+
+	printf("clock rate %ld", rate);
 
 	ret = spi_init(&dev->spi_desc, &init_param->spi_init);
 	if (ret < 0)

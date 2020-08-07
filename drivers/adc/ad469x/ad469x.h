@@ -41,6 +41,7 @@
 #define SRC_AD400X_H_
 
 #include "spi_engine.h"
+#include "clk_axi_clkgen.h"
 
 /******************************************************************************/
 /********************** Macros and Constants Definitions **********************/
@@ -89,6 +90,8 @@ enum ad400x_supported_dev_ids {
 struct ad469x_dev {
 	/* SPI */
 	spi_desc *spi_desc;
+	/* Clock gen for hdl design structure */
+	struct axi_clkgen *clkgen;
 	/* Register access speed */
 	uint32_t reg_access_speed;
 	/* Device Settings */
@@ -98,6 +101,8 @@ struct ad469x_dev {
 struct ad469x_init_param {
 	/* SPI */
 	spi_init_param spi_init;
+	/* Clock gen for hdl design init structure */
+	struct axi_clkgen_init clkgen_init;
 	/* Register access speed */
 	uint32_t reg_access_speed;
 	/* Device Settings */
