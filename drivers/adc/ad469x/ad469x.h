@@ -1,7 +1,7 @@
 /***************************************************************************//**
- *   @file   ad400x.h
- *   @brief  Header file for ad400x Driver.
- *   @author Mircea Caprioru (mircea.caprioru@analog.com)
+ *   @file   ad469x.h
+ *   @brief  Header file for ad469x Driver.
+ *   @author Cristian Pop (cristian.pop@analog.com)
 ********************************************************************************
  * Copyright 2018(c) Analog Devices, Inc.
  *
@@ -121,5 +121,7 @@ int32_t ad469x_spi_write_mask(struct ad469x_dev *dev,
 int32_t ad469x_init(struct ad469x_dev **device,
 		    struct ad469x_init_param *init_param);
 int32_t ad469x_remove(struct ad469x_dev *dev);
+int32_t ad469x_spi_single_conversion(struct ad469x_dev *dev,
+				     uint32_t *adc_data);
 
 #endif /* SRC_AD400X_H_ */

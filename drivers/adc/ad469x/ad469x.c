@@ -1,9 +1,9 @@
 /***************************************************************************//**
- *   @file   ad400x.c
- *   @brief  Implementation of ad400x Driver.
- *   @author Mircea Caprioru (mircea.caprioru@analog.com)
+ *   @file   ad469x.c
+ *   @brief  Implementation of ad69x Driver.
+ *   @author Cristian Pop (cristian.pop@analog.com)
 ********************************************************************************
- * Copyright 2018(c) Analog Devices, Inc.
+ * Copyright 2020(c) Analog Devices, Inc.
  *
  * All rights reserved.
  *

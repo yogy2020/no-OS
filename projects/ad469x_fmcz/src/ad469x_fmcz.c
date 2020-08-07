@@ -27,13 +27,13 @@ struct spi_engine_init_param spi_eng_init_param  = {
 	.type = SPI_ENGINE,
 	.spi_engine_baseaddr = AD469x_SPI_ENGINE_BASEADDR,
 	.cs_delay = 2,
-	.data_width = 24,
+	.data_width = 32,
 };
 
 struct ad469x_init_param ad469x_init_param = {
 	.spi_init = {
 		.chip_select = AD469x_SPI_CS,
-		.max_speed_hz = 40000000,
+		.max_speed_hz = 20833333,
 		.mode = SPI_MODE_0,
 		.platform_ops = &spi_eng_platform_ops,
 		.extra = (void*)&spi_eng_init_param,
