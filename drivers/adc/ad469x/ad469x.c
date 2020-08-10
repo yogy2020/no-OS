@@ -70,13 +70,8 @@ int32_t ad469x_spi_reg_read(struct ad469x_dev *dev,
 	buf[1] = 0xFF & reg_addr;
 	buf[2] = 0xFF;
 
-	// register access runs at a lower clock rate (~2MHz)
-//	spi_engine_set_speed(dev->spi_desc, dev->reg_access_speed);
-
 	ret = spi_write_and_read(dev->spi_desc, buf, 3);
 	*reg_data = buf[0];
-
-//	spi_engine_set_speed(dev->spi_desc, dev->spi_desc->max_speed_hz);
 
 	return ret;
 }
@@ -95,16 +90,11 @@ int32_t ad469x_spi_reg_write(struct ad469x_dev *dev,
 	int32_t ret;
 	uint8_t buf[2];
 
-	// register access runs at a lower clock rate (~2MHz)
-//	spi_engine_set_speed(dev->spi_desc, dev->reg_access_speed);
-
 	buf[0] = AD469x_REG_WRITE(reg_addr >> 8);
 	buf[1] = 0xFF & reg_addr;
 	buf[2] = reg_data;
 
 	ret = spi_write_and_read(dev->spi_desc, buf, 3);
-
-//	spi_engine_set_speed(dev->spi_desc, dev->spi_desc->max_speed_hz);
 
 	return ret;
 }
@@ -175,6 +165,21 @@ int32_t ad469x_spi_write_mask(struct ad469x_dev *dev,
 }
 
 /**
+ * Write to device.
+ * @param dev - The device structure.
+ * @param reg_data - The register data.
+ * @return 0 in case of success, negative error code otherwise.
+ */
+int32_t ad469x_conversion_mode_command_write(struct ad469x_dev *dev, uint8_t reg_data)
+{
+	uint8_t buf[1];
+
+	buf[0] = reg_data;
+
+	return spi_write_and_read(dev->spi_desc, buf, 1);
+}
+
+/**
  * @brief Initialize GPIO driver handlers for the GPIOs in the system.
  *        ad713x_init() helper function.
  * @param [out] dev - AD713X device handler.
@@ -204,6 +209,29 @@ static int32_t ad469x_init_gpio(struct ad469x_dev *dev,
 	}
 
 	return SUCCESS;
+}
+
+
+/**
+ * Set the power consumption mode of the ADC core.
+ * @param dev - The device structure.
+ * @param mode - The power mode.
+ * 					Accepted values: AD77681_ECO
+ *									 AD77681_MEDIAN
+ *									 AD77681_FAST
+ * @return 0 in case of success, negative error code otherwise.
+ */
+int32_t ad469x_set_interface_mode(struct ad469x_dev *dev,
+			       enum ad469x_interface_mode mode)
+{
+	int32_t ret;
+
+	ret = ad469x_spi_write_mask(dev,
+			AD469x_REG_SETUP,
+			AD469x_REG_SETUP_IF_MODE_MASK,
+			AD469x_REG_SETUP_IF_MODE(mode));
+
+	return ret;
 }
 
 /**
@@ -253,23 +281,18 @@ int32_t ad469x_init(struct ad469x_dev **device,
 	dev->reg_access_speed = init_param->reg_access_speed;
 	dev->dev_id = init_param->dev_id;
 
-//	spi_engine_set_transfer_width(dev->spi_desc, 16);
 	ad469x_spi_reg_read(dev, AD469x_REG_SCRATCH_PAD, &data);
 
-//	spi_engine_set_transfer_width(dev->spi_desc, spi_eng_init_param->data_width);
-//	data |= AD400X_TURBO_MODE(init_param->turbo_mode) |
-//	       AD400X_HIGH_Z_MODE(init_param->high_z_mode) |
-//	       AD400X_SPAN_COMPRESSION(init_param->span_compression) |
-//	       AD400X_EN_STATUS_BITS(init_param->en_status_bits);
 	data = 0xEA;
 	ret = ad469x_spi_reg_write(dev, AD469x_REG_SCRATCH_PAD, data);
 	if (ret < 0)
 		goto error;
 
-//	spi_engine_set_transfer_width(dev->spi_desc, 16);
 	ad469x_spi_reg_read(dev, AD469x_REG_SCRATCH_PAD, &data);
 
-//	spi_engine_set_transfer_width(dev->spi_desc, spi_eng_init_param->data_width);
+	ad469x_set_interface_mode(dev, AD469x_IF_CONVERSION_MODE);
+
+	ad469x_conversion_mode_command_write(dev, AD469x_CMD_SEL_TEMP_SNSOR_CH);
 
 	*device = dev;
 

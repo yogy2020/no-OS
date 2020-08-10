@@ -50,36 +50,50 @@
 #define AD469x_REG_READ(x)		( (1 << 7) | (x & 0xFF) )		// Read from register x
 #define AD469x_REG_WRITE(x)		( (~(1 << 7)) & (x & 0xFF) )  	// Write to register x
 
-#define AD469x_REG_IF_CONFIG_A	0x000
-#define AD469x_REG_IF_CONFIG_B	0x001
-#define AD469x_REG_DEVICE_TYPE	0x003
-#define AD469x_REG_DEVICE_ID_L	0x004
-#define AD469x_REG_DEVICE_ID_H	0x005
-#define AD469x_REG_SCRATCH_PAD	0x00A
-#define AD469x_REG_VENDOR_L	0x00C
-#define AD469x_REG_VENDOR_H	0x00D
-#define AD469x_REG_LOOP_MODE	0x00E
-#define AD469x_REG_IF_CONFIG_C	0x010
-#define AD469x_REG_IF_STATUS	0x011
-#define AD469x_REG_STATUS	0x014
+#define AD469x_REG_IF_CONFIG_A		0x000
+#define AD469x_REG_IF_CONFIG_B		0x001
+#define AD469x_REG_DEVICE_TYPE		0x003
+#define AD469x_REG_DEVICE_ID_L		0x004
+#define AD469x_REG_DEVICE_ID_H		0x005
+#define AD469x_REG_SCRATCH_PAD		0x00A
+#define AD469x_REG_VENDOR_L			0x00C
+#define AD469x_REG_VENDOR_H			0x00D
+#define AD469x_REG_LOOP_MODE		0x00E
+#define AD469x_REG_IF_CONFIG_C		0x010
+#define AD469x_REG_IF_STATUS		0x011
+#define AD469x_REG_STATUS			0x014
 #define AD469x_REG_ALERT_STATUS1	0x015
 #define AD469x_REG_ALERT_STATUS2	0x016
 #define AD469x_REG_ALERT_STATUS3	0x017
 #define AD469x_REG_ALERT_STATUS4	0x018
 #define AD469x_REG_CLAMP_STATUS1	0x01A
 #define AD469x_REG_CLAMP_STATUS2	0x01B
-#define AD469x_REG_SETUP	0x020
-#define AD469x_REG_REF_CTRL	0x021
-#define AD469x_REG_SEQ_CTRL	0x022
-#define AD469x_REG_AC_CTRL	0x023
+#define AD469x_REG_SETUP			0x020
+#define AD469x_REG_REF_CTRL			0x021
+#define AD469x_REG_SEQ_CTRL			0x022
+#define AD469x_REG_AC_CTRL			0x023
 #define AD469x_REG_STD_SEQ_CONFIG	0x024
-#define AD469x_REG_GPIO_CTRL	0x026
-#define AD469x_REG_GP_MODE	0x027
-#define AD469x_REG_GPIO_STATE	0x028
-#define AD469x_REG_TEMP_CTRL	0x029
+#define AD469x_REG_GPIO_CTRL		0x026
+#define AD469x_REG_GP_MODE			0x027
+#define AD469x_REG_GPIO_STATE		0x028
+#define AD469x_REG_TEMP_CTRL		0x029
 
+/* 5-bit SDI Conversion Mode Commands */
+#define AD469x_CMD_REG_CONFIG_MODE		(0x0A << 3)
+#define AD469x_CMD_SEL_TEMP_SNSOR_CH	(0x0F << 3)
+#define AD469x_CMD_CONFIG_CH_SEL 		(0x10 << 3)
 
+/* AD469x_REG_SETUP */
+#define AD469x_REG_SETUP_IF_MODE_MASK		(0x01 << 3)
+#define AD469x_REG_SETUP_IF_MODE(x)			((x & 0x01) << 3)
 
+/*****************************************************************************/
+/*************************** Types Declarations *******************************/
+/******************************************************************************/
+enum ad469x_interface_mode {
+	AD469x_IF_REGISTER_MODE = 0,
+	AD469x_IF_CONVERSION_MODE = 1,
+};
 
 enum ad400x_supported_dev_ids {
 	ID_AD4003,

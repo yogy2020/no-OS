@@ -27,7 +27,7 @@
 #define GPIO_RESETN_1			GPIO_OFFSET + 32
 #define GPIO_DEVICE_ID			XPAR_PS7_GPIO_0_DEVICE_ID
 
-#define SPI_ENGINE_OFFLOAD_EXAMPLE	0
+#define SPI_ENGINE_OFFLOAD_EXAMPLE	1
 
 int main()
 {
@@ -38,6 +38,7 @@ int main()
 	uint8_t commands_data[2] = {0xFF, 0xFF};
 	int32_t ret, data;
 	uint32_t i;
+//	main_sergiu();
 
 	struct spi_engine_offload_init_param spi_engine_offload_init_param = {
 		.offload_config = OFFLOAD_RX_EN,
