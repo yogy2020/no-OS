@@ -45,6 +45,7 @@
 #include "stdbool.h"
 #include "ad469x.h"
 #include "spi_engine.h"
+#include "delay.h"
 #include "error.h"
 
 /******************************************************************************/
@@ -174,6 +175,38 @@ int32_t ad469x_spi_write_mask(struct ad469x_dev *dev,
 }
 
 /**
+ * @brief Initialize GPIO driver handlers for the GPIOs in the system.
+ *        ad713x_init() helper function.
+ * @param [out] dev - AD713X device handler.
+ * @param [in] init_param - Pointer to the initialization structure.
+ * @return \ref SUCCESS in case of success, \ref FAILURE otherwise.
+ */
+static int32_t ad469x_init_gpio(struct ad469x_dev *dev,
+				struct ad469x_init_param *init_param)
+{
+
+	int32_t ret;
+
+	ret = gpio_get_optional(&dev->gpio_resetn, init_param->gpio_resetn);
+	if (IS_ERR_VALUE(ret))
+		return FAILURE;
+
+	/** Reset to configure pins */
+	if (init_param->gpio_resetn) {
+		ret = gpio_direction_output(dev->gpio_resetn, false);
+		if (IS_ERR_VALUE(ret))
+			return FAILURE;
+		mdelay(100);
+		ret = gpio_set_value(dev->gpio_resetn, true);
+		if (IS_ERR_VALUE(ret))
+			return FAILURE;
+		mdelay(100);
+	}
+
+	return SUCCESS;
+}
+
+/**
  * Initialize the device.
  * @param device - The device structure.
  * @param init_param - The structure that contains the device initial
@@ -208,6 +241,10 @@ int32_t ad469x_init(struct ad469x_dev **device,
 	status = axi_clkgen_get_rate(dev->clkgen, &rate);
 
 	printf("clock rate %ld", rate);
+
+	ret = ad469x_init_gpio(dev, init_param);
+	if(IS_ERR_VALUE(ret))
+		goto error;
 
 	ret = spi_init(&dev->spi_desc, &init_param->spi_init);
 	if (ret < 0)

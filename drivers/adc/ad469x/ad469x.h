@@ -42,6 +42,7 @@
 
 #include "spi_engine.h"
 #include "clk_axi_clkgen.h"
+#include "gpio.h"
 
 /******************************************************************************/
 /********************** Macros and Constants Definitions **********************/
@@ -96,6 +97,8 @@ struct ad469x_dev {
 	uint32_t reg_access_speed;
 	/* Device Settings */
 	enum ad400x_supported_dev_ids dev_id;
+	/** RESET GPIO handler. */
+	struct gpio_desc		*gpio_resetn;
 };
 
 struct ad469x_init_param {
@@ -107,6 +110,8 @@ struct ad469x_init_param {
 	uint32_t reg_access_speed;
 	/* Device Settings */
 	enum ad400x_supported_dev_ids dev_id;
+	/** RESET GPIO initialization structure. */
+	struct gpio_init_param *gpio_resetn;
 };
 
 int32_t ad469x_spi_reg_read(struct ad469x_dev *dev,

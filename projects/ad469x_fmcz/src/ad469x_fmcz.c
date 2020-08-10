@@ -11,6 +11,8 @@
 #include "error.h"
 #include "delay.h"
 #include "clk_axi_clkgen.h"
+#include "gpio.h"
+#include "gpio_extra.h"
 
 /******************************************************************************/
 /********************** Macros and Constants Definitions **********************/
@@ -21,6 +23,9 @@
 #define AD469x_SPI_CS                   0
 #define AD469x_SPI_ENG_REF_CLK_FREQ_HZ	XPAR_PS7_SPI_0_SPI_CLK_FREQ_HZ
 #define RX_CLKGEN_BASEADDR				XPAR_SPI_CLKGEN_BASEADDR
+#define GPIO_OFFSET			54
+#define GPIO_RESETN_1			GPIO_OFFSET + 32
+#define GPIO_DEVICE_ID			XPAR_PS7_GPIO_0_DEVICE_ID
 
 #define SPI_ENGINE_OFFLOAD_EXAMPLE	0
 
@@ -52,6 +57,11 @@ int main()
 		.base = RX_CLKGEN_BASEADDR,
 		.parent_rate = 100000000,
 	};
+	struct xil_gpio_init_param gpio_extra_param;
+	struct gpio_init_param ad469x_resetn = {
+		.number = GPIO_RESETN_1,
+		.extra = &gpio_extra_param
+	};
 
 	struct ad469x_init_param ad469x_init_param = {
 		.spi_init = {
@@ -64,9 +74,13 @@ int main()
 		.clkgen_init = clkgen_init,
 		.reg_access_speed = 1000000,
 		.dev_id = ID_AD4003, /* dev_id */
+		.gpio_resetn = &ad469x_resetn,
 	};
 
 	print("Test\n\r");
+
+	gpio_extra_param.device_id = GPIO_DEVICE_ID;
+	gpio_extra_param.type = GPIO_PS;
 
 	uint32_t spi_eng_msg_cmds[3] = {
 		CS_LOW,
