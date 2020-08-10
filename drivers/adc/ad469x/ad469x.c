@@ -96,15 +96,15 @@ int32_t ad469x_spi_reg_write(struct ad469x_dev *dev,
 	uint8_t buf[2];
 
 	// register access runs at a lower clock rate (~2MHz)
-	spi_engine_set_speed(dev->spi_desc, dev->reg_access_speed);
+//	spi_engine_set_speed(dev->spi_desc, dev->reg_access_speed);
 
-	buf[0] = AD469x_REG_READ(reg_addr >> 8);
+	buf[0] = AD469x_REG_WRITE(reg_addr >> 8);
 	buf[1] = 0xFF & reg_addr;
 	buf[2] = reg_data;
 
 	ret = spi_write_and_read(dev->spi_desc, buf, 3);
 
-	spi_engine_set_speed(dev->spi_desc, dev->spi_desc->max_speed_hz);
+//	spi_engine_set_speed(dev->spi_desc, dev->spi_desc->max_speed_hz);
 
 	return ret;
 }
