@@ -84,8 +84,8 @@
 #define AD469x_CMD_CONFIG_CH_SEL 		(0x10 << 3)
 
 /* AD469x_REG_SETUP */
-#define AD469x_REG_SETUP_IF_MODE_MASK		(0x01 << 3)
-#define AD469x_REG_SETUP_IF_MODE(x)			((x & 0x01) << 3)
+#define AD469x_REG_SETUP_IF_MODE_MASK		(0x01 << 2)
+#define AD469x_REG_SETUP_IF_MODE(x)			((x & 0x01) << 2)
 
 /*****************************************************************************/
 /*************************** Types Declarations *******************************/

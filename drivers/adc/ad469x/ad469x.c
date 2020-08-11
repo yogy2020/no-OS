@@ -71,7 +71,7 @@ int32_t ad469x_spi_reg_read(struct ad469x_dev *dev,
 	buf[2] = 0xFF;
 
 	ret = spi_write_and_read(dev->spi_desc, buf, 3);
-	*reg_data = buf[0];
+	*reg_data = buf[1];
 
 	return ret;
 }
@@ -108,10 +108,10 @@ int32_t ad469x_spi_reg_write(struct ad469x_dev *dev,
 int32_t ad469x_spi_single_conversion(struct ad469x_dev *dev,
 				     uint32_t *adc_data)
 {
-	uint32_t buf = 0;
+	uint16_t buf = 0;
 	int32_t ret;
 
-	ret = spi_write_and_read(dev->spi_desc, (uint8_t *)&buf, 4);
+	ret = spi_write_and_read(dev->spi_desc, (uint8_t *)&buf, 2);
 
 	*adc_data = buf & 0xFFFFF;
 

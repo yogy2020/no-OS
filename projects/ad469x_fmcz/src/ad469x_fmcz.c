@@ -27,7 +27,7 @@
 #define GPIO_RESETN_1			GPIO_OFFSET + 32
 #define GPIO_DEVICE_ID			XPAR_PS7_GPIO_0_DEVICE_ID
 
-#define SPI_ENGINE_OFFLOAD_EXAMPLE	1
+#define SPI_ENGINE_OFFLOAD_EXAMPLE	0
 
 int main()
 {
@@ -67,7 +67,7 @@ int main()
 	struct ad469x_init_param ad469x_init_param = {
 		.spi_init = {
 			.chip_select = AD469x_SPI_CS,
-			.max_speed_hz = 20833333,
+			.max_speed_hz = 2083333,
 			.mode = SPI_MODE_0,
 			.platform_ops = &spi_eng_platform_ops,
 			.extra = (void*)&spi_eng_init_param,
