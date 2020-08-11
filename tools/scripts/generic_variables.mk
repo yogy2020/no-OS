@@ -9,6 +9,7 @@
 # PLATFORM = aducm3029
 
 PROJECT			?= $(realpath .)
+TARGET 			?= $(notdir $(realpath .))
 NO-OS			?= $(realpath ../..)
 
 INCLUDE			?= $(NO-OS)/include
