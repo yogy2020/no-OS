@@ -26,8 +26,9 @@
 #define GPIO_OFFSET			54
 #define GPIO_RESETN_1			GPIO_OFFSET + 32
 #define GPIO_DEVICE_ID			XPAR_PS7_GPIO_0_DEVICE_ID
+#define SPI_TRIGGER_BASEADDR	XPAR_SPI_AD4696_TRIGGER_GEN_BASEADDR
 
-#define SPI_ENGINE_OFFLOAD_EXAMPLE	0
+#define SPI_ENGINE_OFFLOAD_EXAMPLE	1
 
 int main()
 {
@@ -104,6 +105,9 @@ int main()
 	}
 	/* Offload example */
 	else {
+		//axi_write(0x44a70010, BIT(1));
+		axi_io_write(SPI_TRIGGER_BASEADDR, 0x10, BIT(1));
+
 		ret = spi_engine_offload_init(dev->spi_desc, &spi_engine_offload_init_param);
 		if (ret != SUCCESS)
 			return FAILURE;
