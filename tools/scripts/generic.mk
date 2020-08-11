@@ -39,9 +39,13 @@ LIB_TARGETS += $(IIO_LIB)
 SRCS     += $(foreach dir, $(SRC_DIRS), $(call rwildcard, $(dir),*.c))
 INCS     += $(foreach dir, $(SRC_DIRS), $(call rwildcard, $(dir),*.h))
 
+# Recursive ignored files. If a directory is in the variable IGNORED_FILES,
+# all files from inside the directory will be ignored
+ALL_IGNORED_FILES = $(foreach dir, $(IGNORED_FILES), $(call rwildcard, $(dir),*))
+
 # Remove ignored files
-SRCS     := $(filter-out $(IGNORE_FILES),$(SRCS))
-INCS     := $(filter-out $(IGNORE_FILES),$(INCS))
+SRCS     := $(filter-out $(ALL_IGNORED_FILES),$(SRCS))
+INCS     := $(filter-out $(ALL_IGNORED_FILES),$(INCS))
 
 #------------------------------------------------------------------------------
 #                          INCLUDE SPECIFIC MAKEFILES
