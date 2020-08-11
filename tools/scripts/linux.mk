@@ -13,19 +13,19 @@ export LD
 #------------------------------------------------------------------------------
 #                           ENVIRONMENT VARIABLES                              
 #------------------------------------------------------------------------------
-NO-OS 		  = $(CURDIR)/../..
-DRIVERS 	  = $(NO-OS)/drivers
-INCLUDE 	  = $(NO-OS)/include
-LIBRARIES	  = $(NO-OS)/libraries
-SCRIPTS_DIR	  = $(NO-OS)/tools/scripts
-PROJECTS_DIR 	  = $(NO-OS)/projects
-SDK_WORKSPACE	  = $(PROJECT)/build
-BUILD_DIR	  = $(PROJECT)/build
-OBJECTS_DIR	  = $(BUILD_DIR)/obj
-TEMP_DIR	  = $(BUILD_DIR)/tmp
-SCRIPTS_PATH 	  = $(SCRIPTS_DIR)/platform/$(PLATFORM)
-PLATFORM_DRIVERS  = $(DRIVERS)/platform/LOCAL_PLATFORM
-PROJECT 	  = $(PROJECTS_DIR)/$(TARGET)
+NO-OS 		  ?= $(CURDIR)/../..
+DRIVERS 	  ?= $(NO-OS)/drivers
+INCLUDE 	  ?= $(NO-OS)/include
+LIBRARIES	  ?= $(NO-OS)/libraries
+SCRIPTS_DIR	  ?= $(NO-OS)/tools/scripts
+PROJECTS_DIR 	  ?= $(NO-OS)/projects
+SDK_WORKSPACE	  ?= $(PROJECT)/build
+BUILD_DIR	  ?= $(PROJECT)/build
+OBJECTS_DIR	  ?= $(BUILD_DIR)/obj
+TEMP_DIR	  ?= $(BUILD_DIR)/tmp
+SCRIPTS_PATH 	  ?= $(SCRIPTS_DIR)/platform/$(PLATFORM)
+PLATFORM_DRIVERS  ?= $(DRIVERS)/platform/LOCAL_PLATFORM
+PROJECT 	  ?= $(PROJECTS_DIR)/$(TARGET)
 
 #------------------------------------------------------------------------------
 #                             MAKEFILE INCLUDES                                
