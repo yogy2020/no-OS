@@ -74,17 +74,4 @@ struct clk_hw {
 		struct clk *clk;
 };
 
-struct clk_init_data {
-	const char				*name;
-	const struct clk_ops	*ops;
-	const char				**parent_names;
-	uint8_t					num_parents;
-	uint32_t				flags;
-};
-
-struct clk_onecell_data {
-	struct clk		**clks;
-	uint32_t		clk_num;
-};
-
 #endif
